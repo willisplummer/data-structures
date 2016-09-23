@@ -122,9 +122,15 @@ context "linked list" do
   end
 
   context "#reverse" do
-    it "returns the linkedlist in reverse as new object" do
+    it "returns the linkedlist in reverse as a new object" do
       ll = long_list
       expect(ll.reverse.to_a).to eq([4, 3, 2, 1])
+    end
+
+    it "doesn't change the original" do
+      ll = long_list
+      ll.reverse
+      expect(ll).to eq([1, 2, 3, 4])
     end
   end
 

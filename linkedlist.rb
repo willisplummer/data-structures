@@ -72,7 +72,7 @@ class LinkedList
     self[length-1]
   end
 
-# O(n^2)
+# O(n)
   def drop
     l = length
     if l == 1
@@ -83,13 +83,15 @@ class LinkedList
     self
   end
 
-# O(n^2)
+# O(n)
   def append(value)
     self[length]=value
     self
   end
 
-#maybe considered cheating because it uses array to do the heavy lifting O(n)
+#maybe considered cheating because it uses array to do the heavy lifting
+#O(n)
+
   def reverse_2
     a = to_a.reverse
     iterate do |count, node|
@@ -99,7 +101,7 @@ class LinkedList
     self
   end
 
-# O(n^5)
+# O(n)
   def reverse
     new_list = LinkedList.new(self.last.value)
     self.drop

@@ -48,6 +48,10 @@ context "linked list" do
       expect(long_list[3].value).to eq(4)
     end
 
+    it "returns if nill if the index is out of bounds" do
+      expect(long_list[420]).to eq(nil)
+    end
+
     it "raises an error if n is less than 0" do
       expect { long_list[-6] }.to raise_error(ArgumentError)
     end

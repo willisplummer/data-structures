@@ -89,6 +89,16 @@ class LinkedList
     self
   end
 
+#maybe considered cheating because it uses array to do the heavy lifting O(n)
+  def reverse_2
+    a = to_a.reverse
+    iterate do |count, node|
+      node.value=a[count]
+      count += 1
+    end
+    self
+  end
+
 # O(n^5)
   def reverse
     new_list = LinkedList.new(self.last.value)

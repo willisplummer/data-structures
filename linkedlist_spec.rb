@@ -3,7 +3,7 @@ require 'rspec'
 
 context "linked list" do
   subject do
-    LinkedList.new(1)
+    LinkedList.new(Node.new(nil, 1))
   end
 
   context "#append" do

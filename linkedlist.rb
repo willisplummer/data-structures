@@ -9,8 +9,8 @@ end
 class LinkedList
   attr_accessor :head
   #O(1)
-  def initialize(value)
-    @head = Node.new(nil, value)
+  def initialize(node=nil)
+    @head = node
   end
 
   #O(n)
@@ -62,10 +62,11 @@ class LinkedList
   def []=(n, value)
     if n == 0
       prepend(value)
-    elsif n > length || n < 0
+    elsif n < 0
       raise ArgumentError.new "#{n} must be less than or equal to size of this linked list"
     else
       preceding = self[n-1]
+      raise ArgumentError.new "#{n} must be less than or equal to size of this linked list" if preceding.nil?
       new_node = Node.new(preceding.pointer, value)
       preceding.pointer = new_node
     end
@@ -80,23 +81,33 @@ class LinkedList
 
   #O(n)
   def last
-    self[length-1]
+    reduce{|last, node| last = node if node.pointer.nil?}
   end
 
   #O(n)
   def drop
-    l = length
-    if l == 1
-      self.head = nil
-    else
-      self[l-2].pointer = nil
+    each do |node|
+      if node.pointer.nil?
+        self.head = nil
+      elsif node.pointer.pointer.nil?
+        node.pointer = nil
+      end
     end
-    self
   end
 
   #O(n)
   def append(value)
-    self[length]=value
+    new_node = Node.new(nil, value)
+    if head.nil?
+      self.head = new_node
+    else
+      each do |node|
+        if node.pointer.nil?
+          node.pointer = new_node
+          break
+        end
+      end
+    end
     self
   end
 
@@ -125,8 +136,6 @@ class LinkedList
       prev = current_node_copy
       ref = ref.pointer
     end
-    list = LinkedList.new(0)
-    list.head = last_node
-    list
+    LinkedList.new(last_node)
   end
 end

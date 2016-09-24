@@ -130,14 +130,14 @@ context "linked list" do
     it "doesn't change the original" do
       ll = long_list
       ll.reverse
-      expect(ll).to eq([1, 2, 3, 4])
+      expect(ll.to_a).to eq([1, 2, 3, 4])
     end
   end
 
-  context "#reverse_2" do
+  context "#reverse_in_place" do
     it "reverses the linkedlist in place" do
       ll = long_list
-      ll.reverse_2
+      ll.reverse_in_place
       expect(ll.to_a).to eq([4, 3, 2, 1])
     end
   end

@@ -24,6 +24,16 @@ class LinkedList
   end
 
   #O(n)
+  def each(&block)
+    ref = head
+    while !ref.nil?
+      block.call(ref)
+      ref = ref.pointer
+    end
+    self
+  end
+
+  #O(n)
   def length
     reduce do |count, node|
       count += 1
@@ -37,7 +47,7 @@ class LinkedList
     end
   end
 
-# O(n)
+  #O(n)
   def [](n)
     raise ArgumentError.new "#{n} can't be negative" if n < 0
     element = head
@@ -48,31 +58,32 @@ class LinkedList
     element
   end
 
-# O(n)
+  #O(n)
   def []=(n, value)
     if n == 0
       prepend(value)
     elsif n > length || n < 0
       raise ArgumentError.new "#{n} must be less than or equal to size of this linked list"
     else
-      new_element = Node.new(self[n], value)
-      self[n-1].pointer = new_element
+      preceding = self[n-1]
+      new_node = Node.new(preceding.pointer, value)
+      preceding.pointer = new_node
     end
   end
 
-#O(1)
+  #O(1)
   def prepend(value)
     new_front = Node.new(head, value)
     self.head = new_front
     self
   end
 
-# O(n)
+  #O(n)
   def last
     self[length-1]
   end
 
-# O(n)
+  #O(n)
   def drop
     l = length
     if l == 1
@@ -83,32 +94,39 @@ class LinkedList
     self
   end
 
-# O(n)
+  #O(n)
   def append(value)
     self[length]=value
     self
   end
 
-#maybe considered cheating because it uses array to do the heavy lifting
-#O(n)
-
-  def reverse_2
-    a = to_a.reverse
-    reduce do |count, node|
-      node.value=a[count]
-      count += 1
+  #O(n)
+  def reverse_in_place
+    prev = nil
+    ref = head
+    while !ref.nil?
+      current_node = ref
+      next_node = current_node.pointer
+      last_node = current_node if ref.pointer.nil?
+      ref.pointer = prev
+      prev = current_node
+      ref = next_node
     end
-    self
+    self.head = last_node
   end
 
-# O(n)
+  #O(n)
   def reverse
-    new_list = LinkedList.new(self.last.value)
-    self.drop
-    length.times do
-      new_list.append(self.last.value)
-      self.drop
+    prev = nil
+    ref = head
+    while !ref.nil?
+      current_node_copy = Node.new(prev, ref.value)
+      last_node = current_node_copy if ref.pointer.nil?
+      prev = current_node_copy
+      ref = ref.pointer
     end
-    new_list
+    list = LinkedList.new(0)
+    list.head = last_node
+    list
   end
 end

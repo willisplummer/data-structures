@@ -14,7 +14,7 @@ class LinkedList
   end
 
   #O(n)
-  def iterate(accum=0, &block)
+  def reduce(accum=0, &block)
     ref = head
     while !ref.nil?
       accum = block.call(accum, ref)
@@ -25,14 +25,14 @@ class LinkedList
 
   #O(n)
   def length
-    iterate do |count, node|
+    reduce do |count, node|
       count += 1
     end
   end
 
   #O(n)
   def to_a
-    iterate([]) do |array, node|
+    reduce([]) do |array, node|
       array += [node.value]
     end
   end
@@ -94,7 +94,7 @@ class LinkedList
 
   def reverse_2
     a = to_a.reverse
-    iterate do |count, node|
+    reduce do |count, node|
       node.value=a[count]
       count += 1
     end
